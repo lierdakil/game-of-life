@@ -16,7 +16,7 @@ int main()
                 "          x     x       x                               "
                 "           x   x                                        "
                 "            xx                                          "
-              );
+              ,false, true);
     for(;;) {
         std::cout << "\033[2J\033[1;1H";
         std::cout<<f;

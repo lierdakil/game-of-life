@@ -21,8 +21,9 @@ public:
 class GameField : public MultiArray<GameCell,2> {
     friend class circulator;
     unsigned int w,h;
+    bool xperiodic,yperiodic;
 public:
-    GameField(uint w, uint h, std::string init="");
+    GameField(uint w, uint h, std::string init="", bool xperiodic=false, bool yperiodic=false);
     void evolve();
     friend std::ostream& operator<<(std::ostream& s, const GameField& f);
 };

@@ -16,23 +16,28 @@ circulator &circulator::operator++() {
     double phi=std::atan2(dj,di)+M_PI_4;
     dj=1.5*sin(phi);
     di=1.5*cos(phi);
-//    if(ci+di>=field->h || cj+dj>=field->w)
-//        ++(*this);
+    if((ci+di>=field->h && !field->yperiodic) || (cj+dj>=field->w && !field->xperiodic))
+        ++(*this);
     return *this;
 }
 
 const GameCell &circulator::operator*(){
-    return (*field)((ci+di+field->h)%field->h,(cj+dj+field->w)%field->w);
+    return (*field)(
+                field->yperiodic?(ci+di+field->h)%field->h:ci+di,
+                field->xperiodic?(cj+dj+field->w)%field->w:cj+dj
+                );
 }
 
 bool circulator::operator!=(const circulator &rhs) {
     return ci!=rhs.ci || cj!=rhs.cj || di!=rhs.di || dj!=rhs.dj;
 }
 
-GameField::GameField(uint w, uint h, std::string init) :
+GameField::GameField(uint w, uint h, std::string init, bool xperiodic, bool yperiodic) :
     MultiArray<GameCell,2>(h,w),
     w(w),
-    h(h)
+    h(h),
+    xperiodic(xperiodic),
+    yperiodic(yperiodic)
 {
     std::copy(init.begin(),init.end(),begin());
 }

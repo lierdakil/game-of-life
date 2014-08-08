@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-circulator::circulator(const MultiArray<GameCell,2>::iterator &it) : field(static_cast<const GameField*>(it.parent())),
+circulator::circulator(MultiArray<GameCell,2>::iterator &it) : field(static_cast<GameField*>(it.parent())),
     ci(it.index()[0]), cj(it.index()[1]), di(0), dj(1)
 {
     ++(*this);
@@ -21,11 +21,16 @@ circulator &circulator::operator++() {
     return *this;
 }
 
-const GameCell &circulator::operator*(){
+GameCell &circulator::operator*(){
     return (*field)(
                 field->yperiodic?(ci+di+field->h)%field->h:ci+di,
                 field->xperiodic?(cj+dj+field->w)%field->w:cj+dj
-                );
+                                 );
+}
+
+GameCell *circulator::operator->()
+{
+    return &(**this);
 }
 
 bool circulator::operator!=(const circulator &rhs) {
@@ -39,12 +44,14 @@ GameField::GameField(uint w, uint h, std::string init, bool xperiodic, bool yper
     xperiodic(xperiodic),
     yperiodic(yperiodic)
 {
+    for(iterator i=begin(); i!=end(); ++i)
+        *i=circulator(i);
     std::copy(init.begin(),init.end(),begin());
 }
 
 void GameField::evolve() {
-    for(iterator i=begin(); i!=end(); ++i)
-        i->calcNeighbours(circulator(i));
+    for(auto& i : *this)
+        i.update();
     for(auto& i : *this)
         i.evolve();
 }

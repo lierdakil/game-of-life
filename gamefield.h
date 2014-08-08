@@ -7,14 +7,15 @@
 class GameField;
 
 class circulator {
-    const GameField* field;
+    GameField* field;
     uint ci,cj;
-    int di,dj;
 public:
+    int di,dj;
     circulator(GameField* f, uint ci, uint cj);
-    circulator(const MultiArray<GameCell,2>::iterator& it);
+    circulator(MultiArray<GameCell,2>::iterator& it);
     circulator& operator++();
-    const GameCell& operator*();
+    GameCell& operator*();
+    GameCell* operator->();
     bool operator!=(const circulator &rhs);
 };
 

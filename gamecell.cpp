@@ -2,32 +2,55 @@
 #include <iostream>
 #include <gamefield.h>
 
-GameCell::GameCell() : alive(false), neighbours(0) {
+GameCell::GameCell() : alive(false), neighbours(0), next_neighbours(0) {
 
-}
-
-void GameCell::calcNeighbours(circulator c) {
-    circulator ce(c);
-    uint& n=neighbours=0;
-    do
-        if((*c).alive)n++;
-    while(++c!=ce);
 }
 
 bool GameCell::evolve() {
-    uint& n=neighbours;
-    if(n>=2 && n<=3 && (alive || n==3))
-        return alive=true;
-    else
-        return alive=false;
-    n=0;
+    if(neighbours==3 && !alive) {
+        do
+            (*c)->next_neighbours++;
+        while(++*c!=*ce);
+        alive=true;
+    } else if(neighbours!=2 && neighbours!=3 && alive) {
+        do
+            (*c)->next_neighbours--;
+        while(++*c!=*ce);
+        alive=false;
+    }
+    return alive;
+}
+
+void GameCell::update()
+{
+    neighbours=next_neighbours;
+}
+
+GameCell &GameCell::operator=(circulator c)
+{
+    this->c.reset(new circulator(c));
+    this->ce.reset(new circulator(c));
+    return *this;
 }
 
 GameCell &GameCell::operator=(const char c) {
-    if(c!='0' && c!=' ' && c!='o' && c!='O')
+    if(c!='0' && c!=' ' && c!='o' && c!='O') {
         alive=true;
-    else
+        do
+            (*this->c)->next_neighbours++;
+        while(++(*this->c)!=*ce);
+    } else
         alive=false;
+    return *this;
+}
+
+GameCell &GameCell::operator=(const GameCell &other)
+{
+    alive=other.alive;
+    neighbours=other.neighbours;
+    next_neighbours=other.next_neighbours;
+    c.reset(new circulator(*other.c));
+    ce.reset(new circulator(*other.ce));
     return *this;
 }
 

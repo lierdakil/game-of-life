@@ -57,18 +57,20 @@ void GameField::evolve() {
 }
 
 std::ostream& operator<<(std::ostream& s, const GameField& f) {
-    for(uint i=0; i<f.w+1; ++i) {
-        s<<'-';
+    s<<"╔";
+    for(uint i=0; i<f.w; ++i) {
+        s<<"═";
     }
+    s<<"╗";
     for(auto i=f.const_begin(); i!=f.const_end(); ++i) {
         if(i.index()[1]==0)
-            s<<"|"<<std::endl<<"|";
+            s<<(i==f.const_begin()?"":"║")<<std::endl<<"║";
         s<<*i;
     }
-    s<<"|"<<std::endl<<"|";
-    for(uint i=0; i<f.w+1; ++i) {
-        s<<'-';
+    s<<"║"<<std::endl<<"╚";
+    for(uint i=0; i<f.w; ++i) {
+        s<<"═";
     }
-    s<<std::endl;
+    s<<"╝"<<std::endl;
     return s;
 }

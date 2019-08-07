@@ -56,8 +56,8 @@ GameCell &GameCell::operator=(const GameCell &other)
 
 std::ostream& operator<<(std::ostream& s, const GameCell&c) {
     if(c.alive)
-        s<<'x';
+        s<<"▮";//▮
     else
-        s<<' ';
+        s<<" ";
     return s;
 }

@@ -4,19 +4,35 @@
 
 int main()
 {
-    GameField f(56,25,
+    GameField f(49,25,
                //0         10        20        30        40        50
                //123456789012345678901234567890123456789012345678901234567890
-                "                        x                               "
-                "                      x x                               "
-                "            xx      xx            xx                    "
-                "           x   x    xx            xx                    "
-                "xx        x     x   xx                                  "
-                "xx        x   x xx    x x                               "
-                "          x     x       x                               "
-                "           x   x                                        "
-                "            xx                                          "
-              ,false, true);
+                "                        x                        "
+                "                      x x                        "
+                "            xx      xx            xx             "
+                "           x   x    xx            xx             "
+                "xx        x     x   xx                           "
+                "xx        x   x xx    x x                        "
+                "          x     x       x                        "
+                "           x   x                                 "
+                "            xx                                   "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "                                                 "
+                "          xx                                     "
+                "          x                                      "
+                "           xxx                                   "
+                "             x                                   "
+              ,true, true);
     for(;;) {
         std::cout << "\033[2J\033[1;1H";
         std::cout<<f;
